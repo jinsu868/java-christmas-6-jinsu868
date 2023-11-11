@@ -16,6 +16,10 @@ public class OrderMenu {
         this.menu = Menu.getMenuByName(menuName);
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
     private void validateName(String menuName) {
         if (!isExistMenu(menuName)) {
             throw IllegalArgumentExceptionType.INVALID_ORDER.getException();

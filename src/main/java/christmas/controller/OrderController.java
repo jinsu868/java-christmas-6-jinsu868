@@ -1,5 +1,6 @@
 package christmas.controller;
 
+import christmas.domain.Order;
 import christmas.domain.OrderMenu;
 import christmas.domain.VisitDate;
 import christmas.dto.OrderRequest;
@@ -16,14 +17,15 @@ public class OrderController {
 
     public void run() {
         VisitDate visitDate = getVisitDate();
-        List<OrderMenu> orderMenus = getOrderMenus();
+        getOrder(visitDate);
     }
 
-    private List<OrderMenu> getOrderMenus() {
+    private Order getOrder(VisitDate visitDate) {
         while (true) {
             try {
                 List<OrderRequest> orderRequests = inputView.readMenus();
-                return convertOrderMenus(orderRequests);
+                List<OrderMenu> orderMenus = convertOrderMenus(orderRequests);
+                return new Order(visitDate, orderMenus);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
