@@ -1,11 +1,12 @@
 package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.error.IllegalArgumentExceptionType;
 import java.util.Arrays;
 import java.util.List;
 
 public class InputView {
-    public int readDay() {
+    public int readDate() {
         System.out.println("12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)");
         String input = Console.readLine();
         return parseInt(input);
@@ -15,7 +16,7 @@ public class InputView {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException();
+            throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
         }
     }
 
