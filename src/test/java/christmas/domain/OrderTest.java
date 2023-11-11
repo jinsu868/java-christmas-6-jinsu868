@@ -35,4 +35,17 @@ class OrderTest {
         orderMenus.add(menu2);
         Order order = new Order(visitDate, orderMenus);
     }
+
+    @Test
+    @DisplayName("음료만 주문할 경우 예외가 발생한다.")
+    void 음료만_주문하는_경우_테스트() {
+        VisitDate visitDate = new VisitDate(1);
+        OrderMenu menu1 = new OrderMenu("레드와인", 2);
+        OrderMenu menu2 = new OrderMenu("샴페인", 3);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(menu1);
+        orderMenus.add(menu2);
+        assertThatThrownBy(() -> new Order(visitDate, orderMenus))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
