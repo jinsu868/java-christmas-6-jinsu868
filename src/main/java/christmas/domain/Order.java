@@ -16,6 +16,12 @@ public class Order {
         this.orderMenus = orderMenus;
     }
 
+    public int calculateTotalOrderAmount() {
+        return orderMenus.stream()
+                .mapToInt(OrderMenu::calculateOrderAmount)
+                .sum();
+    }
+
     private void validateMenuDuplication(List<OrderMenu> orderMenus) {
         List<Menu> menus = orderMenus.stream()
                 .map(m -> m.getMenu())

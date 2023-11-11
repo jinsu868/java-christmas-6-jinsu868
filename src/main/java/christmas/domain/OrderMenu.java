@@ -16,6 +16,10 @@ public class OrderMenu {
         this.menu = Menu.getMenuByName(menuName);
     }
 
+    public int calculateOrderAmount() {
+        return menu.getPrice() * quantity;
+    }
+
     public Menu getMenu() {
         return menu;
     }
