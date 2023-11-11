@@ -1,6 +1,7 @@
 package christmas.domain;
 
 import christmas.constant.Menu;
+import christmas.constant.MenuType;
 import christmas.error.IllegalArgumentExceptionType;
 import java.util.HashSet;
 import java.util.List;
@@ -12,8 +13,21 @@ public class Order {
 
     public Order(VisitDate visitDate, List<OrderMenu> orderMenus) {
         validateMenuDuplication(orderMenus);
+        validateOrderAmount(orderMenus);
+        validateOnlyDrink(orderMenus);
         this.visitDate = visitDate;
         this.orderMenus = orderMenus;
+    }
+
+    private void validateOnlyDrink(List<OrderMenu> orderMenus) {
+        if (isOnlyDrink(orderMenus)) {
+            throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
+        }
+    }
+
+    private boolean isOnlyDrink(List<OrderMenu> orderMenus) {
+        return orderMenus.stream()
+                .allMatch(orderMenu -> orderMenu.getMenu().getKind().equals(MenuType.DRINK.getType()));
     }
 
     public int calculateTotalOrderAmount() {
@@ -30,5 +44,19 @@ public class Order {
         if (set.size() != orderMenus.size()) {
             throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
         }
+    }
+
+    private void validateOrderAmount(List<OrderMenu> orderMenus) {
+        int totalAmount = getTotalAmount(orderMenus);
+        if (totalAmount > 20) {
+            throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
+        }
+    }
+
+    private int getTotalAmount(List<OrderMenu> orderMenus) {
+        int totalAmount = orderMenus.stream()
+                .mapToInt(m -> m.getQuantity())
+                .sum();
+        return totalAmount;
     }
 }

@@ -3,7 +3,6 @@ package christmas.domain;
 import christmas.constant.Menu;
 import christmas.error.IllegalArgumentExceptionType;
 import java.util.Arrays;
-import java.util.EnumSet;
 
 public class OrderMenu {
     private Menu menu;
@@ -22,6 +21,10 @@ public class OrderMenu {
 
     public Menu getMenu() {
         return menu;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     private void validateName(String menuName) {
