@@ -7,12 +7,16 @@ import java.util.Map;
 public class Bill {
     private Order order;
     private Map<DiscountType, Integer> discountResults;
-    private Grade grade;
 
     public Bill(Order order, Map<DiscountType, Integer> discountResults) {
-        this.grade = getGrade(discountResults);
         this.discountResults = discountResults;
         this.order = order;
+    }
+
+    public int calculateDiscountAmount() {
+        return discountResults.values().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
     public int getBeforeDiscountOrderAmount() {
@@ -20,11 +24,11 @@ public class Bill {
     }
 
     public int getAfterDiscountOrderAmount() {
-        return order.calculateTotalOrderAmount() - calculateDiscountAmount(discountResults);
+        return order.calculateTotalOrderAmount() - calculateDiscountAmount();
     }
 
-    private Grade getGrade(Map<DiscountType, Integer> discountResults) {
-        int discountAmount = calculateDiscountAmount(discountResults);
+    private Grade getGrade() {
+        int discountAmount = calculateDiscountAmount();
         if (discountAmount >= 5000 && discountAmount < 10000) {
             return Grade.STAR;
         }
@@ -35,11 +39,5 @@ public class Bill {
             return Grade.SANTA;
         }
         return Grade.NONE;
-    }
-
-    private int calculateDiscountAmount(Map<DiscountType, Integer> discountResults) {
-        return discountResults.values().stream()
-                .mapToInt(Integer::intValue)
-                .sum();
     }
 }
