@@ -16,10 +16,20 @@ public class DiscountManager {
         this.order = order;
     }
 
+    public boolean judgeGiveaway() {
+        if (order.calculateTotalOrderAmount() >= 120000) {
+            return true;
+        }
+        return false;
+    }
+
     public Map<DiscountType, Integer> getDiscountResults() {
         Map<DiscountType, Integer> discountResults = new HashMap<>();
         int visitDate = order.getVisitDate();
         List<OrderMenu> orderMenus = order.getOrderMenus();
+        if (order.calculateTotalOrderAmount() < 10000) {
+            return discountResults;
+        }
 
         applyDDayDiscount(discountResults, visitDate);
         applySpecialDayDiscount(discountResults, visitDate);
@@ -38,24 +48,31 @@ public class DiscountManager {
 
     private void applyWeekDayDiscount(Map<DiscountType, Integer> discountResults, List<OrderMenu> orderMenus,
                                       int visitDate) {
-        int discountAmount = orderMenus.stream()
-                .filter(orderMenu -> MenuType.DESSERT.getType()
-                        .equals(orderMenu.getMenu().getKind()))
-                .mapToInt(orderMenu -> 2023)
-                .sum();
-
-        discountResults.put(DiscountType.WEEKDAY, discountAmount);
+        if (Date.isWeekDay(visitDate)) {
+            int discountAmount = orderMenus.stream()
+                    .filter(orderMenu -> MenuType.DESSERT.getType()
+                            .equals(orderMenu.getMenu().getKind()))
+                    .mapToInt(orderMenu -> 2023 * orderMenu.getQuantity())
+                    .sum();
+            if (discountAmount != 0){
+                discountResults.put(DiscountType.WEEKDAY, discountAmount);
+            }
+        }
     }
 
     private void applyWeekEndDiscount(Map<DiscountType, Integer> discountResults, List<OrderMenu> orderMenus,
                                       int visitDate) {
-        int discountAmount = orderMenus.stream()
-                .filter(orderMenu -> MenuType.MAIN_MENU.getType()
-                        .equals(orderMenu.getMenu().getKind()))
-                .mapToInt(orderMenu -> 2023)
-                .sum();
+        if (Date.isWeekEnd(visitDate)) {
+            int discountAmount = orderMenus.stream()
+                    .filter(orderMenu -> MenuType.MAIN_MENU.getType()
+                            .equals(orderMenu.getMenu().getKind()))
+                    .mapToInt(orderMenu -> 2023 * orderMenu.getQuantity())
+                    .sum();
 
-        discountResults.put(DiscountType.WEEKDAY, discountAmount);
+            if (discountAmount != 0) {
+                discountResults.put(DiscountType.WEEKDAY, discountAmount);
+            }
+        }
     }
 
     private void applySpecialDayDiscount(Map<DiscountType, Integer> discountResults, int visitDate) {
