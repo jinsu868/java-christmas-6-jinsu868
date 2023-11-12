@@ -1,6 +1,7 @@
 package christmas.view;
 
 import christmas.constant.DiscountType;
+import christmas.constant.Grade;
 import christmas.constant.Message;
 import christmas.domain.Order;
 import java.util.Map;
@@ -40,4 +41,11 @@ public class OutputView {
         }
     }
 
+    public void printBeforeDiscount(int amount) {
+        System.out.println(String.format(Message.BEFORE_DISCOUNT_MESSAGE.getMessage(), amount));
+    }
+
+    public void printEventBadge(Grade grade) {
+        System.out.println(String.format(Message.EVENT_BADGE_MESSAGE.getMessage(), grade));
+    }
 }
