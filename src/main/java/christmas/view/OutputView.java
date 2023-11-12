@@ -16,13 +16,14 @@ public class OutputView {
     }
 
     public void printOrderMenus(Order order) {
-        System.out.println(Message.ORDER_MENU_PREFIX_MESSAGE);
+        System.out.println(Message.ORDER_MENU_PREFIX_MESSAGE.getMessage());
         order.getOrderMenus().forEach(orderMenu ->
                 System.out.println(String.format(Message.ORDER_MENU_MESSAGE.getMessage(),
                         orderMenu.getMenu().getName(), orderMenu.getQuantity())));
     }
 
     public void printBenefitResults(Map<DiscountType, Integer> discountResults) {
+        System.out.println(Message.BENEFIT_PREFIX_MESSAGE.getMessage());
         if (discountResults.size() == 0) {
             System.out.println(Message.NONE_MESSAGE.getMessage());
         }
@@ -34,7 +35,7 @@ public class OutputView {
     }
 
     public void printGiveaway(boolean isGiveaway) {
-        System.out.println(Message.GIVEWAY_PREFIX_MESSAGE.getMessage());
+        System.out.println(Message.GIVEAWAY_PREFIX_MESSAGE.getMessage());
         if (isGiveaway) {
             System.out.println(Message.GIVEAWAY_MESSAGE.getMessage());
         } else {
@@ -47,7 +48,7 @@ public class OutputView {
     }
 
     public void printEventBadge(Grade grade) {
-        System.out.println(String.format(Message.EVENT_BADGE_MESSAGE.getMessage(), grade));
+        System.out.println(String.format(Message.EVENT_BADGE_MESSAGE.getMessage(), grade.getGrade()));
     }
 
     public void printTotalDiscountAmount(int amount) {

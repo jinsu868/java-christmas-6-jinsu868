@@ -27,6 +27,9 @@ public class DiscountManager {
         Map<DiscountType, Integer> discountResults = new HashMap<>();
         int visitDate = order.getVisitDate();
         List<OrderMenu> orderMenus = order.getOrderMenus();
+        if (order.calculateTotalOrderAmount() < 10000) {
+            return discountResults;
+        }
 
         applyDDayDiscount(discountResults, visitDate);
         applySpecialDayDiscount(discountResults, visitDate);
