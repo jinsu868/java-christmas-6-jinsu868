@@ -1,11 +1,11 @@
 package christmas.constant;
 
 public enum DiscountType {
-    D_DAY("디데이할인"),
-    SPECIAL("특별할인"),
-    WEEKEND("주말할인"),
-    WEEKDAY("평일할인"),
-    GIVEAWAY("증정할인");
+    D_DAY("크리스마스 디데이 할인"),
+    SPECIAL("특별 할인"),
+    WEEKEND("주말 할인"),
+    WEEKDAY("평일 할인"),
+    GIVEAWAY("증정 이벤트");
 
     private String type;
 
