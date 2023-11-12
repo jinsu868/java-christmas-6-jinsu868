@@ -4,7 +4,6 @@ import christmas.domain.Order;
 import christmas.domain.OrderMenu;
 import christmas.domain.VisitDate;
 import christmas.dto.OrderRequest;
-import christmas.error.IllegalArgumentExceptionType;
 import christmas.view.InputView;
 import java.util.List;
 
@@ -17,7 +16,11 @@ public class OrderController {
 
     public void run() {
         VisitDate visitDate = getVisitDate();
-        getOrder(visitDate);
+        Order order = getOrder(visitDate);
+        if (order.calculateTotalOrderAmount() < 10000) {
+
+        }
+
     }
 
     private Order getOrder(VisitDate visitDate) {
