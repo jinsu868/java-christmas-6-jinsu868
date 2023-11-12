@@ -19,15 +19,7 @@ public class Bill {
                 .sum();
     }
 
-    public int getBeforeDiscountOrderAmount() {
-        return order.calculateTotalOrderAmount();
-    }
-
-    public int getAfterDiscountOrderAmount() {
-        return order.calculateTotalOrderAmount() - calculateDiscountAmount();
-    }
-
-    private Grade getGrade() {
+    public Grade getGrade() {
         int discountAmount = calculateDiscountAmount();
         if (discountAmount >= 5000 && discountAmount < 10000) {
             return Grade.STAR;
@@ -39,5 +31,21 @@ public class Bill {
             return Grade.SANTA;
         }
         return Grade.NONE;
+    }
+
+    public int getBeforeDiscountOrderAmount() {
+        return order.calculateTotalOrderAmount();
+    }
+
+    public int getAfterDiscountOrderAmount() {
+        return order.calculateTotalOrderAmount() - calculateRealDiscountAmount();
+    }
+
+    private int calculateRealDiscountAmount() {
+        return discountResults.entrySet().stream()
+                .filter(discountResult -> !discountResult.getKey().getType()
+                        .equals(DiscountType.GIVEAWAY.getType()))
+                .mapToInt(Map.Entry::getValue)
+                .sum();
     }
 }

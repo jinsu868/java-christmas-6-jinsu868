@@ -16,7 +16,7 @@ public class OutputView {
     }
 
     public void printOrderMenus(Order order) {
-        System.out.println(Message.ORDER_MENU_MESSAGE.getMessage());
+        System.out.println(Message.ORDER_MENU_PREFIX_MESSAGE);
         order.getOrderMenus().forEach(orderMenu ->
                 System.out.println(String.format(Message.ORDER_MENU_MESSAGE.getMessage(),
                         orderMenu.getMenu().getName(), orderMenu.getQuantity())));
@@ -34,6 +34,7 @@ public class OutputView {
     }
 
     public void printGiveaway(boolean isGiveaway) {
+        System.out.println(Message.GIVEWAY_PREFIX_MESSAGE.getMessage());
         if (isGiveaway) {
             System.out.println(Message.GIVEAWAY_MESSAGE.getMessage());
         } else {
@@ -47,5 +48,13 @@ public class OutputView {
 
     public void printEventBadge(Grade grade) {
         System.out.println(String.format(Message.EVENT_BADGE_MESSAGE.getMessage(), grade));
+    }
+
+    public void printTotalDiscountAmount(int amount) {
+        System.out.println(String.format(Message.TOTAL_DISCOUNT_AMOUNT_MESSAGE.getMessage(), amount));
+    }
+
+    public void printAfterDiscountOrderAmount(int amount) {
+        System.out.println(String.format(Message.AFTER_DISCOUNT_ORDER_AMOUNT_MESSAGE.getMessage(), amount));
     }
 }

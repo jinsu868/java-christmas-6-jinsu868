@@ -7,9 +7,12 @@ public enum Message {
     ORDER_MENU_MESSAGE("%s %d개"),
     NONE_MESSAGE("없음"),
     DISCOUNT_RESULTS_MESSAGE("%s: %,+d원"),
+    GIVEWAY_PREFIX_MESSAGE("<증정 메뉴>"),
     GIVEAWAY_MESSAGE("샴페인 1개"),
     BEFORE_DISCOUNT_MESSAGE("<할인 전 총주문 금액>\n %d원"),
-    EVENT_BADGE_MESSAGE("<12월 이벤트 배지>\n%s");
+    EVENT_BADGE_MESSAGE("<12월 이벤트 배지>\n%s"),
+    TOTAL_DISCOUNT_AMOUNT_MESSAGE("<총혜택 금액>\n-%,d원"),
+    AFTER_DISCOUNT_ORDER_AMOUNT_MESSAGE("<할인 후 예상 결제 금액>\n-%,d원");
 
     private String message;
 
