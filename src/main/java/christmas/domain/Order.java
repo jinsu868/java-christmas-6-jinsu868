@@ -3,6 +3,7 @@ package christmas.domain;
 import christmas.constant.Menu;
 import christmas.constant.MenuType;
 import christmas.error.IllegalArgumentExceptionType;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,20 @@ public class Order {
         this.orderMenus = orderMenus;
     }
 
+    public int calculateTotalOrderAmount() {
+        return orderMenus.stream()
+                .mapToInt(OrderMenu::calculateOrderAmount)
+                .sum();
+    }
+
+    public int getVisitDate() {
+        return visitDate.getDate();
+    }
+
+    public List<OrderMenu> getOrderMenus() {
+        return Collections.unmodifiableList(orderMenus);
+    }
+
     private void validateOnlyDrink(List<OrderMenu> orderMenus) {
         if (isOnlyDrink(orderMenus)) {
             throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
@@ -28,12 +43,6 @@ public class Order {
     private boolean isOnlyDrink(List<OrderMenu> orderMenus) {
         return orderMenus.stream()
                 .allMatch(orderMenu -> orderMenu.getMenu().getKind().equals(MenuType.DRINK.getType()));
-    }
-
-    public int calculateTotalOrderAmount() {
-        return orderMenus.stream()
-                .mapToInt(OrderMenu::calculateOrderAmount)
-                .sum();
     }
 
     private void validateMenuDuplication(List<OrderMenu> orderMenus) {

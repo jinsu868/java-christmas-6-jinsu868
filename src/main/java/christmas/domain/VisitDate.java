@@ -1,6 +1,5 @@
 package christmas.domain;
 
-import christmas.constant.Date;
 import christmas.error.IllegalArgumentExceptionType;
 
 public class VisitDate {
@@ -16,7 +15,7 @@ public class VisitDate {
     }
 
     private void rangeValidate(int date) {
-        if (date < Date.START.getDay() || date > Date.END.getDay()) {
+        if (date < 1 || date > 31) {
             throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
         }
     }
