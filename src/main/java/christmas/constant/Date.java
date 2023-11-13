@@ -18,17 +18,20 @@ public enum Date {
 
     public static boolean isSpecialDay(int day) {
         return Arrays.stream(values())
-                .anyMatch(d -> d.getType().equals(Date.SPECIAL.getType()));
+                .anyMatch(d -> d.getType().equals(Date.SPECIAL.getType())
+                && d.getDay().contains(day));
     }
 
     public static boolean isWeekDay(int day) {
         return Arrays.stream(values())
-                .anyMatch(d -> d.getType().equals(Date.WEEKDAY.getType()));
+                .anyMatch(d -> d.getType().equals(Date.WEEKDAY.getType())
+                && d.getDay().contains(day));
     }
 
     public static boolean isWeekEnd(int day) {
         return Arrays.stream(values())
-                .anyMatch(d -> d.getType().equals(Date.WEEKEND.getType()));
+                .anyMatch(d -> d.getType().equals(Date.WEEKEND.getType())
+                && d.getDay().contains(day));
     }
 
     public String getType() {
