@@ -3,7 +3,6 @@ package christmas.domain;
 import static org.junit.jupiter.api.Assertions.*;
 
 import christmas.constant.DiscountType;
-import christmas.constant.Menu;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
