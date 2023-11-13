@@ -100,6 +100,21 @@ class DiscountManagerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 8, 9, 15})
+    void 평일_할인_적용X_테스트(int date) {
+        VisitDate visitDate = new VisitDate(date);
+        OrderMenu orderMenu = new OrderMenu("양송이수프", 3);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        Order order = new Order(visitDate, orderMenus);
+        DiscountManager discountManager = new DiscountManager(order);
+        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+        boolean isWeekDayDiscount = discountResults.keySet().stream()
+                .anyMatch(discountType -> discountType.getType().equals(DiscountType.WEEKDAY));
+        Assertions.assertThat(isWeekDayDiscount).isFalse();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 8, 9, 15})
     void 주말_할인_적용_테스트(int date) {
         VisitDate visitDate = new VisitDate(date);
         OrderMenu orderMenu = new OrderMenu("해산물파스타", 3);
@@ -109,5 +124,20 @@ class DiscountManagerTest {
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
         Assertions.assertThat(discountResults.get(DiscountType.WEEKEND)).isEqualTo(2023 * 3);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {3, 4, 5, 6, 7})
+    void 주말_할인_적용X_테스트(int date) {
+        VisitDate visitDate = new VisitDate(date);
+        OrderMenu orderMenu = new OrderMenu("아이스크림", 3);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        Order order = new Order(visitDate, orderMenus);
+        DiscountManager discountManager = new DiscountManager(order);
+        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+        boolean isWeekendDiscount = discountResults.keySet().stream()
+                .anyMatch(discountType -> discountType.getType().equals(DiscountType.WEEKEND));
+        Assertions.assertThat(isWeekendDiscount).isFalse();
     }
 }
