@@ -120,5 +120,22 @@ class BillTest {
 
         Assertions.assertThat(bill.getBadge()).isEqualTo(Badge.STAR);
     }
+
+    @Test
+    @DisplayName("할인이 적용된 최종 가격을 테스트합니다.")
+    void 할인_적용_최종_가격_테스트() {
+        VisitDate visitDate = new VisitDate(24);
+        OrderMenu orderMenu1 = new OrderMenu("바비큐립", 1);
+        OrderMenu orderMenu2 = new OrderMenu("초코케이크", 3);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu1);
+        orderMenus.add(orderMenu2);
+        Order order = new Order(visitDate, orderMenus);
+        DiscountManager discountManager = new DiscountManager(order);
+        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+        Bill bill = new Bill(order, discountResults);
+
+        Assertions.assertThat(bill.getAfterDiscountOrderAmount()).isEqualTo(88631);
+    }
 }
 
