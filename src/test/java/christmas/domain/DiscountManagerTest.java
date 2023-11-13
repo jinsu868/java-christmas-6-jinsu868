@@ -26,6 +26,7 @@ class DiscountManagerTest {
         Order order = new Order(visitDate, orderMenus);
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+
         Assertions.assertThat(discountResults.get(DiscountType.D_DAY)).isEqualTo(discountAmount);
     }
 
@@ -41,6 +42,7 @@ class DiscountManagerTest {
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
         boolean isDDayDiscount = discountResults.keySet().stream()
                 .anyMatch(discountType -> discountType.getType().equals(DiscountType.D_DAY));
+
         Assertions.assertThat(isDDayDiscount).isFalse();
     }
 
@@ -54,6 +56,7 @@ class DiscountManagerTest {
         Order order = new Order(visitDate, orderMenus);
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+
         Assertions.assertThat(discountResults.get(DiscountType.SPECIAL)).isEqualTo(1000);
     }
 
@@ -69,6 +72,7 @@ class DiscountManagerTest {
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
         boolean isSpecialDiscount = discountResults.keySet().stream()
                 .anyMatch(discountType -> discountType.getType().equals(DiscountType.SPECIAL));
+
         Assertions.assertThat(isSpecialDiscount).isFalse();
     }
 
@@ -82,6 +86,7 @@ class DiscountManagerTest {
         Order order = new Order(visitDate, orderMenus);
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+
         Assertions.assertThat(discountResults.size()).isEqualTo(0);
     }
 
@@ -95,6 +100,7 @@ class DiscountManagerTest {
         Order order = new Order(visitDate, orderMenus);
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+
         Assertions.assertThat(discountResults.get(DiscountType.WEEKDAY)).isEqualTo(2023 * 3);
     }
 
@@ -110,6 +116,7 @@ class DiscountManagerTest {
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
         boolean isWeekDayDiscount = discountResults.keySet().stream()
                 .anyMatch(discountType -> discountType.getType().equals(DiscountType.WEEKDAY));
+
         Assertions.assertThat(isWeekDayDiscount).isFalse();
     }
 
@@ -123,6 +130,7 @@ class DiscountManagerTest {
         Order order = new Order(visitDate, orderMenus);
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+
         Assertions.assertThat(discountResults.get(DiscountType.WEEKEND)).isEqualTo(2023 * 3);
     }
 
@@ -138,6 +146,38 @@ class DiscountManagerTest {
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
         boolean isWeekendDiscount = discountResults.keySet().stream()
                 .anyMatch(discountType -> discountType.getType().equals(DiscountType.WEEKEND));
+
         Assertions.assertThat(isWeekendDiscount).isFalse();
+    }
+
+    @Test
+    @DisplayName("120000원 이상 구매 시 증정품을 준다.")
+    void 증정품_적용_테스트() {
+        VisitDate visitDate = new VisitDate(1);
+        OrderMenu orderMenu = new OrderMenu("해산물파스타", 4);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        Order order = new Order(visitDate, orderMenus);
+        DiscountManager discountManager = new DiscountManager(order);
+        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+
+        Assertions.assertThat(discountResults.get(DiscountType.GIVEAWAY)).isEqualTo(25000);
+    }
+
+    @Test
+    @DisplayName("120000원 미만 구매하면 증정품을 제공하지 않습니다.")
+    void 증정품_미적용_테스트() {
+        VisitDate visitDate = new VisitDate(1);
+        OrderMenu orderMenu = new OrderMenu("해산물파스타", 2);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        Order order = new Order(visitDate, orderMenus);
+        DiscountManager discountManager = new DiscountManager(order);
+        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+
+        boolean isGiveawayDiscount = discountResults.keySet().stream()
+                .anyMatch(discountType -> discountType.getType().equals(DiscountType.GIVEAWAY));
+
+        Assertions.assertThat(isGiveawayDiscount).isFalse();
     }
 }
