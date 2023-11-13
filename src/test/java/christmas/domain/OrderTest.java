@@ -48,4 +48,17 @@ class OrderTest {
         assertThatThrownBy(() -> new Order(visitDate, orderMenus))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    @DisplayName("주문 수량이 20을 초과하면 에러가 발생한다.")
+    void 주문_수량이_20_초과_생성_실패_테스트() {
+        VisitDate visitDate = new VisitDate(1);
+        OrderMenu menu1 = new OrderMenu("해산물파스타", 10);
+        OrderMenu menu2 = new OrderMenu("레드와인", 11);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(menu1);
+        orderMenus.add(menu2);
+        assertThatThrownBy(() -> new Order(visitDate, orderMenus))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

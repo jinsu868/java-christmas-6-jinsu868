@@ -30,7 +30,6 @@ class OrderMenuTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-
     @ParameterizedTest
     @CsvSource({"양송이수프-2,12000", "타파스-4,22000", "시저셀러드-3,24000"})
     void 주문_메뉴_금액_계산_로직_테스트(String input, int result) {
