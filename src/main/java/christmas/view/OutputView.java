@@ -39,6 +39,7 @@ public class OutputView {
             System.out.println(Message.GIVEAWAY_MESSAGE.getMessage());
             return;
         }
+
         System.out.println(Message.NONE_MESSAGE.getMessage());
     }
 
@@ -56,5 +57,9 @@ public class OutputView {
 
     public void printAfterDiscountOrderAmount(int amount) {
         System.out.println(String.format(Message.AFTER_DISCOUNT_ORDER_AMOUNT_MESSAGE.getMessage(), amount));
+    }
+
+    public void printErrorMessage(String message) {
+        System.out.println(message);
     }
 }

@@ -49,7 +49,7 @@ public class OrderController {
                 List<OrderMenu> orderMenus = convertOrderMenus(orderRequests);
                 return new Order(visitDate, orderMenus);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                outputView.printErrorMessage(e.getMessage());
             }
         }
     }
@@ -66,7 +66,7 @@ public class OrderController {
                 VisitDate visitDate = new VisitDate(inputView.readDate());
                 return visitDate;
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                outputView.printErrorMessage(e.getMessage());
             }
         }
     }
