@@ -9,8 +9,6 @@ public enum DiscountAmount {
     MIN(10000),
     MIN_GIVEAWAY(120000);
 
-
-
     private int amount;
 
     private DiscountAmount(int amount) {

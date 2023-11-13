@@ -1,5 +1,7 @@
 package christmas.constant;
 
+import java.util.Arrays;
+
 public enum Badge {
     SANTA("산타", 20000, Integer.MAX_VALUE),
     STAR("별", 5000, 10000),
@@ -14,6 +16,14 @@ public enum Badge {
         this.badge = badge;
         this.minBoundary = minBoundary;
         this.maxBoundary = maxBoundary;
+    }
+
+    public static Badge generate(int totalDiscountAmount) {
+        return Arrays.stream(Badge.values())
+                .filter(badge -> totalDiscountAmount >= badge.getMinBoundary()
+                        && (totalDiscountAmount < badge.getMaxBoundary()))
+                .findFirst()
+                .orElse(Badge.NONE);
     }
 
     public String getBadge() {
