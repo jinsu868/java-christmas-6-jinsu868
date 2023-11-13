@@ -1,7 +1,7 @@
 package christmas.domain;
 
 import christmas.constant.DiscountType;
-import christmas.constant.Grade;
+import christmas.constant.Badge;
 import java.util.Map;
 
 public class Bill {
@@ -19,18 +19,18 @@ public class Bill {
                 .sum();
     }
 
-    public Grade getGrade() {
+    public Badge getBadge() {
         int discountAmount = calculateDiscountAmount();
         if (discountAmount >= 5000 && discountAmount < 10000) {
-            return Grade.STAR;
+            return Badge.STAR;
         }
         if (discountAmount >= 10000 && discountAmount < 20000) {
-            return Grade.TREE;
+            return Badge.TREE;
         }
         if (discountAmount >= 20000) {
-            return Grade.SANTA;
+            return Badge.SANTA;
         }
-        return Grade.NONE;
+        return Badge.NONE;
     }
 
     public int getBeforeDiscountOrderAmount() {

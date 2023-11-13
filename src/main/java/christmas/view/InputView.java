@@ -1,18 +1,29 @@
 package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.constant.Message;
 import christmas.constant.Separator;
 import christmas.dto.OrderRequest;
 import christmas.error.IllegalArgumentExceptionType;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InputView {
+    private static final int MENU_NAME_INDEX = 0;
+    private static final int MENU_QUANTITY_INDEX = 1;
+    private static final int SPLIT_STRING_LENGTH = 2;
+
     public int readDate() {
-        System.out.println("12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)");
+        System.out.println(Message.VISIT_DAY_INPUT_MESSAGE.getMessage());
         String input = Console.readLine();
         return parseInt(input);
+    }
+
+    public List<OrderRequest> readMenus() {
+        System.out.println(Message.ORDER_MENU_INPUT_MESSAGE.getMessage());
+        String input = Console.readLine();
+
+        return parseMenus(input);
     }
 
     private int parseInt(String input) {
@@ -23,25 +34,21 @@ public class InputView {
         }
     }
 
-    public List<OrderRequest> readMenus() {
-        System.out.println("주문하실 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)");
-        String input = Console.readLine();
-
-        return parseMenus(input);
-    }
-
     private List<OrderRequest> parseMenus(String input) {
         try {
-            return Arrays.asList(input.split(Separator.COMMA.getDivision())).stream()
-                    .map(m -> {
-                        String[] menus = m.split(Separator.DASH.getDivision());
-                        if (menus.length != 2) {
-                            throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
-                        }
-                        return new OrderRequest(menus[0], Integer.parseInt(menus[1]));
-                    }).collect(Collectors.toList());
+            return Arrays.stream(input.split(Separator.COMMA.getDivision()))
+                    .map(m -> m.split(Separator.DASH.getDivision()))
+                    .peek(this::validateMenu)
+                    .map(menu -> new OrderRequest(menu[MENU_NAME_INDEX], Integer.parseInt(menu[MENU_QUANTITY_INDEX])))
+                    .toList();
         } catch (NumberFormatException e) {
             throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
+        }
+    }
+
+    private void validateMenu(String[] menu) {
+        if (menu.length != SPLIT_STRING_LENGTH) {
+            throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
         }
     }
 }

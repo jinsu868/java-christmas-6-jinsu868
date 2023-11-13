@@ -70,7 +70,7 @@ public class DiscountManager {
                     .sum();
 
             if (discountAmount != 0) {
-                discountResults.put(DiscountType.WEEKDAY, discountAmount);
+                discountResults.put(DiscountType.WEEKEND, discountAmount);
             }
         }
     }

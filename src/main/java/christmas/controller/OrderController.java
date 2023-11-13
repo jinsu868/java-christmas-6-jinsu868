@@ -30,7 +30,7 @@ public class OrderController {
 
         DiscountManager discountManager = new DiscountManager(order);
 
-        outputView.printBeforeDiscount(order.calculateTotalOrderAmount());
+        outputView.printBeforeDiscountOrderAmount(order.calculateTotalOrderAmount());
         outputView.printGiveaway(discountManager.judgeGiveaway());
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
         Bill bill = new Bill(order, discountResults);
@@ -39,7 +39,7 @@ public class OrderController {
 
         outputView.printTotalDiscountAmount(bill.calculateDiscountAmount());
         outputView.printAfterDiscountOrderAmount(bill.getAfterDiscountOrderAmount());
-        outputView.printEventBadge(bill.getGrade());
+        outputView.printEventBadge(bill.getBadge());
     }
 
     private Order getOrder(VisitDate visitDate) {
@@ -49,7 +49,7 @@ public class OrderController {
                 List<OrderMenu> orderMenus = convertOrderMenus(orderRequests);
                 return new Order(visitDate, orderMenus);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                outputView.printErrorMessage(e.getMessage());
             }
         }
     }
@@ -66,7 +66,7 @@ public class OrderController {
                 VisitDate visitDate = new VisitDate(inputView.readDate());
                 return visitDate;
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                outputView.printErrorMessage(e.getMessage());
             }
         }
     }

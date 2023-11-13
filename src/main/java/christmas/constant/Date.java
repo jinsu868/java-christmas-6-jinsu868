@@ -8,7 +8,6 @@ public enum Date {
     WEEKDAY("평일", Arrays.asList(3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31)),
     SPECIAL("특별", Arrays.asList(3, 10, 17, 24, 25, 31));
 
-
     private String type;
     private List<Integer> days;
 
@@ -39,5 +38,4 @@ public enum Date {
     public List<Integer> getDay() {
         return days;
     }
-
 }
