@@ -1,6 +1,7 @@
 package christmas.domain;
 
 import christmas.constant.Date;
+import christmas.constant.DiscountAmount;
 import christmas.constant.DiscountType;
 import christmas.constant.Menu;
 import christmas.constant.MenuType;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DiscountManager {
+    private static final int D_DAY_DISCOUNT_LAST_DAY = 25;
+    private static final int D_DAY_DISCOUNT_FIRST_DAY = 1;
     private Order order;
 
 
@@ -17,7 +20,7 @@ public class DiscountManager {
     }
 
     public boolean judgeGiveaway() {
-        if (order.calculateTotalOrderAmount() >= 120000) {
+        if (order.calculateTotalOrderAmount() >= DiscountAmount.MIN_GIVEAWAY.getAmount()) {
             return true;
         }
         return false;
@@ -27,7 +30,7 @@ public class DiscountManager {
         Map<DiscountType, Integer> discountResults = new HashMap<>();
         int visitDate = order.getVisitDate();
         List<OrderMenu> orderMenus = order.getOrderMenus();
-        if (order.calculateTotalOrderAmount() < 10000) {
+        if (order.calculateTotalOrderAmount() < DiscountAmount.MIN.getAmount()) {
             return discountResults;
         }
 
@@ -41,7 +44,7 @@ public class DiscountManager {
     }
 
     private void applyGiveaway(Map<DiscountType, Integer> discountResults) {
-        if (order.calculateTotalOrderAmount() >= 120000) {
+        if (order.calculateTotalOrderAmount() >= DiscountAmount.MIN_GIVEAWAY.getAmount()) {
             discountResults.put(DiscountType.GIVEAWAY, Menu.CHAMPAGNE.getPrice());
         }
     }
@@ -52,7 +55,7 @@ public class DiscountManager {
             int discountAmount = orderMenus.stream()
                     .filter(orderMenu -> MenuType.DESSERT.getType()
                             .equals(orderMenu.getMenu().getKind()))
-                    .mapToInt(orderMenu -> 2023 * orderMenu.getQuantity())
+                    .mapToInt(orderMenu -> DiscountAmount.WEEKDAY.getAmount() * orderMenu.getQuantity())
                     .sum();
             if (discountAmount != 0){
                 discountResults.put(DiscountType.WEEKDAY, discountAmount);
@@ -66,7 +69,7 @@ public class DiscountManager {
             int discountAmount = orderMenus.stream()
                     .filter(orderMenu -> MenuType.MAIN_MENU.getType()
                             .equals(orderMenu.getMenu().getKind()))
-                    .mapToInt(orderMenu -> 2023 * orderMenu.getQuantity())
+                    .mapToInt(orderMenu -> DiscountAmount.WEEKEND.getAmount() * orderMenu.getQuantity())
                     .sum();
 
             if (discountAmount != 0) {
@@ -77,13 +80,14 @@ public class DiscountManager {
 
     private void applySpecialDayDiscount(Map<DiscountType, Integer> discountResults, int visitDate) {
         if (Date.isSpecialDay(visitDate)) {
-            discountResults.put(DiscountType.SPECIAL, 1000);
+            discountResults.put(DiscountType.SPECIAL, DiscountAmount.SPECIAL.getAmount());
         }
     }
 
     private void applyDDayDiscount(Map<DiscountType, Integer> discountResults, int visitDate) {
-        if (visitDate <= 25) {
-            int discountAmount = (visitDate - 1) * 100 + 1000;
+        if (visitDate <= D_DAY_DISCOUNT_LAST_DAY) {
+            int discountAmount = (visitDate - D_DAY_DISCOUNT_FIRST_DAY) * DiscountAmount.ONE_DAY_ADDITIONAL.getAmount()
+                    + DiscountAmount.D_DAY_BASIC.getAmount();
             discountResults.put(DiscountType.D_DAY, discountAmount);
         }
     }

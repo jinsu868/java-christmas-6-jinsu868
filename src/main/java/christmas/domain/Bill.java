@@ -21,13 +21,13 @@ public class Bill {
 
     public Badge getBadge() {
         int discountAmount = calculateDiscountAmount();
-        if (discountAmount >= 5000 && discountAmount < 10000) {
+        if (discountAmount >= Badge.STAR.getMinBoundary() && discountAmount < Badge.STAR.getMaxBoundary()) {
             return Badge.STAR;
         }
-        if (discountAmount >= 10000 && discountAmount < 20000) {
+        if (discountAmount >= Badge.TREE.getMinBoundary() && discountAmount < Badge.TREE.getMaxBoundary()) {
             return Badge.TREE;
         }
-        if (discountAmount >= 20000) {
+        if (discountAmount >= Badge.SANTA.getMinBoundary()) {
             return Badge.SANTA;
         }
         return Badge.NONE;
