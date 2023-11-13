@@ -25,21 +25,21 @@ public class OrderController {
         outputView.printWelcomeMessage();
         VisitDate visitDate = getVisitDate();
         Order order = getOrder(visitDate);
-        outputView.printBenefitPreviewMessage(visitDate.getDate());
-        outputView.printOrderMenus(order);
-
         DiscountManager discountManager = new DiscountManager(order);
+        Bill bill = getBill(order, discountManager);
 
-        outputView.printBeforeDiscountOrderAmount(order.calculateTotalOrderAmount());
-        outputView.printGiveaway(discountManager.judgeGiveaway());
-        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
-        Bill bill = new Bill(order, discountResults);
+        printEventPlanner(bill);
+    }
 
-        outputView.printBenefitResults(discountResults);
-
-        outputView.printTotalDiscountAmount(bill.calculateDiscountAmount());
-        outputView.printAfterDiscountOrderAmount(bill.getAfterDiscountOrderAmount());
-        outputView.printEventBadge(bill.getBadge());
+    private VisitDate getVisitDate() {
+        while (true) {
+            try {
+                VisitDate visitDate = new VisitDate(inputView.readDate());
+                return visitDate;
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e.getMessage());
+            }
+        }
     }
 
     private Order getOrder(VisitDate visitDate) {
@@ -60,14 +60,19 @@ public class OrderController {
                 .toList();
     }
 
-    private VisitDate getVisitDate() {
-        while (true) {
-            try {
-                VisitDate visitDate = new VisitDate(inputView.readDate());
-                return visitDate;
-            } catch (IllegalArgumentException e) {
-                outputView.printErrorMessage(e.getMessage());
-            }
-        }
+    private Bill getBill(Order order, DiscountManager discountManager) {
+        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
+        return new Bill(order, discountResults);
+    }
+
+    private void printEventPlanner(Bill bill) {
+        outputView.printBenefitPreviewMessage(bill.getOrder().getVisitDate());
+        outputView.printOrderMenus(bill.getOrder());
+        outputView.printBeforeDiscountOrderAmount(bill.getBeforeDiscountTotalOrderAmount());
+        outputView.printGiveaway(bill.judgeGiveaway());
+        outputView.printBenefitResults(bill.getDiscountResults());
+        outputView.printTotalDiscountAmount(bill.calculateDiscountAmount());
+        outputView.printAfterDiscountOrderAmount(bill.getAfterDiscountOrderAmount());
+        outputView.printEventBadge(bill.getBadge());
     }
 }

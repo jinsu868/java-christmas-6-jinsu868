@@ -14,16 +14,8 @@ public class DiscountManager {
     private static final int D_DAY_DISCOUNT_FIRST_DAY = 1;
     private Order order;
 
-
     public DiscountManager(Order order) {
         this.order = order;
-    }
-
-    public boolean judgeGiveaway() {
-        if (order.calculateTotalOrderAmount() >= DiscountAmount.MIN_GIVEAWAY.getAmount()) {
-            return true;
-        }
-        return false;
     }
 
     public Map<DiscountType, Integer> getDiscountResults() {
@@ -39,7 +31,6 @@ public class DiscountManager {
         applyWeekEndDiscount(discountResults, orderMenus, visitDate);
         applyWeekDayDiscount(discountResults, orderMenus, visitDate);
         applyGiveaway(discountResults);
-
         return discountResults;
     }
 

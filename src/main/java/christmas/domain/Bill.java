@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.constant.DiscountAmount;
 import christmas.constant.DiscountType;
 import christmas.constant.Badge;
 import java.util.Map;
@@ -17,6 +18,21 @@ public class Bill {
         return discountResults.values().stream()
                 .mapToInt(Integer::intValue)
                 .sum();
+    }
+
+    public boolean judgeGiveaway() {
+        if (order.calculateTotalOrderAmount() >= DiscountAmount.MIN_GIVEAWAY.getAmount()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public Map<DiscountType, Integer> getDiscountResults() {
+        return discountResults;
     }
 
     public Badge getBadge() {
