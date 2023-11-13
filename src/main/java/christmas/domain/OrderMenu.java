@@ -1,6 +1,7 @@
 package christmas.domain;
 
 import christmas.constant.Menu;
+import christmas.constant.OrderQuantity;
 import christmas.error.IllegalArgumentExceptionType;
 import java.util.Arrays;
 
@@ -39,7 +40,7 @@ public class OrderMenu {
     }
 
     private void validateQuantity(int quantity) {
-        if (quantity <= 0) {
+        if (quantity < OrderQuantity.MIN.getQuantity()) {
             throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
         }
     }

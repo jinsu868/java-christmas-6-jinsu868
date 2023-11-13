@@ -2,6 +2,7 @@ package christmas.domain;
 
 import christmas.constant.Menu;
 import christmas.constant.MenuType;
+import christmas.constant.OrderQuantity;
 import christmas.error.IllegalArgumentExceptionType;
 import java.util.Collections;
 import java.util.HashSet;
@@ -57,7 +58,7 @@ public class Order {
 
     private void validateOrderAmount(List<OrderMenu> orderMenus) {
         int totalAmount = getTotalAmount(orderMenus);
-        if (totalAmount > 20) {
+        if (totalAmount > OrderQuantity.MAX.getQuantity()) {
             throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
         }
     }

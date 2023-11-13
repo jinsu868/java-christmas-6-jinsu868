@@ -3,6 +3,9 @@ package christmas.domain;
 import christmas.error.IllegalArgumentExceptionType;
 
 public class VisitDate {
+    private final static int FIRST_DAY = 1;
+    private final static int LAST_DAY = 31;
+
     private int date;
 
     public VisitDate(int date) {
@@ -15,7 +18,7 @@ public class VisitDate {
     }
 
     private void rangeValidate(int date) {
-        if (date < 1 || date > 31) {
+        if (date < FIRST_DAY || date > LAST_DAY) {
             throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
         }
     }
