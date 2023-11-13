@@ -28,7 +28,7 @@ public class InputView {
 
     private int parseInt(String input) {
         try {
-            return Integer.parseInt(input);
+            return Integer.parseInt(input.trim());
         } catch (NumberFormatException e) {
             throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
         }
