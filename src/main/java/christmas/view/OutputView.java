@@ -16,9 +16,11 @@ public class OutputView {
     }
 
     public void printOrderMenus(Order order) {
+        System.out.println(Message.ORDER_MENU_PREFIX_MESSAGE.getMessage());
         order.getOrderMenus().forEach(orderMenu ->
                 System.out.println(String.format(Message.ORDER_MENU_MESSAGE.getMessage(),
                         orderMenu.getMenu().getName(), orderMenu.getQuantity())));
+        System.out.println();
     }
 
     public void printBenefitResults(Map<DiscountType, Integer> discountResults) {
@@ -30,7 +32,8 @@ public class OutputView {
 
         discountResults.forEach((discountType, discountAmount) ->
                 System.out.println(String.format(Message.DISCOUNT_RESULTS_MESSAGE.getMessage(),
-                        discountType.getType(), discountAmount)));
+                        discountType.getType(), -discountAmount)));
+        System.out.println();
     }
 
     public void printGiveaway(boolean isGiveaway) {
@@ -52,7 +55,7 @@ public class OutputView {
     }
 
     public void printTotalDiscountAmount(int amount) {
-        System.out.println(String.format(Message.TOTAL_DISCOUNT_AMOUNT_MESSAGE.getMessage(), amount));
+        System.out.println(String.format(Message.TOTAL_DISCOUNT_AMOUNT_MESSAGE.getMessage(), -amount));
     }
 
     public void printAfterDiscountOrderAmount(int amount) {

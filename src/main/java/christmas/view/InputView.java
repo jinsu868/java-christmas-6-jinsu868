@@ -39,7 +39,8 @@ public class InputView {
             return Arrays.stream(input.split(Separator.COMMA.getDivision()))
                     .map(m -> m.split(Separator.DASH.getDivision()))
                     .peek(this::validateMenu)
-                    .map(menu -> new OrderRequest(menu[MENU_NAME_INDEX], Integer.parseInt(menu[MENU_QUANTITY_INDEX])))
+                    .map(menu -> new OrderRequest(menu[MENU_NAME_INDEX].trim(),
+                            Integer.parseInt(menu[MENU_QUANTITY_INDEX].trim())))
                     .toList();
         } catch (NumberFormatException e) {
             throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
