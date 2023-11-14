@@ -1,8 +1,6 @@
 package christmas.controller;
 
-import christmas.constant.DiscountType;
 import christmas.domain.Badge;
-import christmas.domain.Bill;
 import christmas.domain.DiscountManager;
 import christmas.domain.Order;
 import christmas.domain.OrderMenu;
@@ -11,7 +9,6 @@ import christmas.dto.OrderRequest;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.List;
-import java.util.Map;
 
 public class OrderController {
     private final InputView inputView;
@@ -27,15 +24,16 @@ public class OrderController {
         VisitDate visitDate = getVisitDate();
         Order order = getOrder(visitDate);
         DiscountManager discountManager = new DiscountManager(order);
-        Bill bill = getBill(order, discountManager);
+        Badge badge = Badge.from(discountManager.calculateDiscountAmount());
 
-        printEventPlanner(bill);
+        showDiscountDetails(discountManager, badge);
     }
 
     private VisitDate getVisitDate() {
         while (true) {
             try {
                 VisitDate visitDate = new VisitDate(inputView.readDate());
+                outputView.printBenefitPreviewMessage(visitDate.getDate());
                 return visitDate;
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
@@ -48,6 +46,9 @@ public class OrderController {
             try {
                 List<OrderRequest> orderRequests = inputView.readMenus();
                 List<OrderMenu> orderMenus = convertOrderMenus(orderRequests);
+                Order order = new Order(visitDate, orderMenus);
+                outputView.printOrderMenus(order);
+                outputView.printBeforeDiscountOrderAmount(order.calculateTotalOrderAmount());
                 return new Order(visitDate, orderMenus);
             } catch (IllegalArgumentException e) {
                 outputView.printErrorMessage(e.getMessage());
@@ -61,20 +62,11 @@ public class OrderController {
                 .toList();
     }
 
-    private Bill getBill(Order order, DiscountManager discountManager) {
-        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
-        return new Bill(order, discountResults);
-    }
-
-    private void printEventPlanner(Bill bill) {
-        outputView.printBenefitPreviewMessage(bill.getOrder().getVisitDate());
-        outputView.printOrderMenus(bill.getOrder());
-        outputView.printBeforeDiscountOrderAmount(bill.getBeforeDiscountTotalOrderAmount());
-        outputView.printGiveaway(bill.judgeGiveaway());
-        outputView.printBenefitResults(bill.getDiscountResults());
-        outputView.printTotalDiscountAmount(bill.calculateDiscountAmount());
-        outputView.printAfterDiscountOrderAmount(bill.getAfterDiscountOrderAmount());
-        Badge badge = Badge.from(bill.calculateDiscountAmount());
+    private void showDiscountDetails(DiscountManager discountManager, Badge badge) {
+        outputView.printGiveaway(discountManager.judgeGiveaway());
+        outputView.printBenefitResults(discountManager.getDiscountResults());
+        outputView.printTotalDiscountAmount(discountManager.calculateDiscountAmount());
+        outputView.printAfterDiscountOrderAmount(discountManager.getAfterDiscountOrderAmount());
         outputView.printEventBadge(badge);
     }
 }

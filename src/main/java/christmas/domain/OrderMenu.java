@@ -1,6 +1,5 @@
 package christmas.domain;
 
-import christmas.constant.Menu;
 import christmas.constant.OrderQuantity;
 import christmas.error.IllegalArgumentExceptionType;
 import java.util.Arrays;
@@ -13,7 +12,7 @@ public class OrderMenu {
         validateName(menuName);
         validateQuantity(quantity);
         this.quantity = quantity;
-        this.menu = Menu.getMenuByName(menuName);
+        this.menu = Menu.from(menuName);
     }
 
     public int calculateOrderAmount() {

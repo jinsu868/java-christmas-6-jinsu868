@@ -1,4 +1,4 @@
-package christmas.constant;
+package christmas.domain;
 
 import java.util.Arrays;
 
@@ -26,7 +26,7 @@ public enum Menu {
         this.kind = kind;
     }
 
-    public static Menu getMenuByName(String name) {
+    public static Menu from(String name) {
         return Arrays.stream(values())
                 .filter(menu -> menu.getName().equals(name))
                 .findFirst()

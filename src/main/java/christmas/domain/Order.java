@@ -1,6 +1,5 @@
 package christmas.domain;
 
-import christmas.constant.Menu;
 import christmas.constant.MenuType;
 import christmas.constant.OrderQuantity;
 import christmas.error.IllegalArgumentExceptionType;

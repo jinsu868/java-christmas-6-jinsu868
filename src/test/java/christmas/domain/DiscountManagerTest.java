@@ -1,7 +1,5 @@
 package christmas.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import christmas.constant.DiscountType;
 import java.util.ArrayList;
 import java.util.List;
