@@ -9,7 +9,6 @@ public class OrderMenu {
     private int quantity;
 
     public OrderMenu(String menuName, int quantity) {
-        validateName(menuName);
         validateQuantity(quantity);
         this.quantity = quantity;
         this.menu = Menu.from(menuName);
@@ -25,17 +24,6 @@ public class OrderMenu {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    private void validateName(String menuName) {
-        if (!isExistMenu(menuName)) {
-            throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
-        }
-    }
-
-    private boolean isExistMenu(String menuName) {
-        return Arrays.stream(Menu.values())
-                .anyMatch(menu -> menu.getName().equals(menuName));
     }
 
     private void validateQuantity(int quantity) {

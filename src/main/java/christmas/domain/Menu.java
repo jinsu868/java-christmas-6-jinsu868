@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.error.IllegalArgumentExceptionType;
 import java.util.Arrays;
 
 public enum Menu {
@@ -30,7 +31,7 @@ public enum Menu {
         return Arrays.stream(values())
                 .filter(menu -> menu.getName().equals(name))
                 .findFirst()
-                .get();
+                .orElseThrow(() -> IllegalArgumentExceptionType.INVALID_ORDER.getException());
     }
 
     public String getName() {
