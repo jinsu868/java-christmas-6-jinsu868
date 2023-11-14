@@ -2,7 +2,7 @@ package christmas.domain;
 
 import christmas.constant.MenuType;
 import christmas.constant.OrderQuantity;
-import christmas.error.IllegalArgumentExceptionType;
+import christmas.error.ErrorCode;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +36,7 @@ public class Order {
 
     private void validateOnlyDrink(List<OrderMenu> orderMenus) {
         if (isOnlyDrink(orderMenus)) {
-            throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
+            throw ErrorCode.INVALID_ORDER.getException();
         }
     }
 
@@ -51,14 +51,14 @@ public class Order {
                 .toList();
         Set<Menu> set = new HashSet<>(menus);
         if (set.size() != orderMenus.size()) {
-            throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
+            throw ErrorCode.INVALID_ORDER.getException();
         }
     }
 
     private void validateOrderAmount(List<OrderMenu> orderMenus) {
         int totalAmount = getTotalAmount(orderMenus);
         if (totalAmount > OrderQuantity.MAX.getQuantity()) {
-            throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
+            throw ErrorCode.INVALID_ORDER.getException();
         }
     }
 

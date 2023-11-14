@@ -4,7 +4,7 @@ import camp.nextstep.edu.missionutils.Console;
 import christmas.constant.Message;
 import christmas.constant.Separator;
 import christmas.dto.OrderRequest;
-import christmas.error.IllegalArgumentExceptionType;
+import christmas.error.ErrorCode;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class InputView {
         try {
             return Integer.parseInt(input.trim());
         } catch (NumberFormatException e) {
-            throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
+            throw ErrorCode.INVALID_VISIT_DATE.getException();
         }
     }
 
@@ -43,13 +43,13 @@ public class InputView {
                             Integer.parseInt(menu[MENU_QUANTITY_INDEX].trim())))
                     .toList();
         } catch (NumberFormatException e) {
-            throw IllegalArgumentExceptionType.INVALID_ORDER.getException();
+            throw ErrorCode.INVALID_ORDER.getException();
         }
     }
 
     private void validateMenu(String[] menu) {
         if (menu.length != SPLIT_STRING_LENGTH) {
-            throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
+            throw ErrorCode.INVALID_VISIT_DATE.getException();
         }
     }
 }

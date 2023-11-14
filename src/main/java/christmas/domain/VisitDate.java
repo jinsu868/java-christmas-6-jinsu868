@@ -1,6 +1,6 @@
 package christmas.domain;
 
-import christmas.error.IllegalArgumentExceptionType;
+import christmas.error.ErrorCode;
 
 public class VisitDate {
     private final static int FIRST_DAY = 1;
@@ -19,7 +19,7 @@ public class VisitDate {
 
     private void rangeValidate(int date) {
         if (date < FIRST_DAY || date > LAST_DAY) {
-            throw IllegalArgumentExceptionType.INVALID_VISIT_DATE.getException();
+            throw ErrorCode.INVALID_VISIT_DATE.getException();
         }
     }
 }
