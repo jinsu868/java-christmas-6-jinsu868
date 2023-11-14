@@ -1,6 +1,7 @@
 package christmas.controller;
 
 import christmas.constant.DiscountType;
+import christmas.domain.Badge;
 import christmas.domain.Bill;
 import christmas.domain.DiscountManager;
 import christmas.domain.Order;
@@ -73,6 +74,7 @@ public class OrderController {
         outputView.printBenefitResults(bill.getDiscountResults());
         outputView.printTotalDiscountAmount(bill.calculateDiscountAmount());
         outputView.printAfterDiscountOrderAmount(bill.getAfterDiscountOrderAmount());
-        outputView.printEventBadge(bill.getBadge());
+        Badge badge = Badge.from(bill.calculateDiscountAmount());
+        outputView.printEventBadge(badge);
     }
 }

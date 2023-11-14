@@ -1,4 +1,4 @@
-package christmas.constant;
+package christmas.domain;
 
 import java.util.Arrays;
 
@@ -18,7 +18,7 @@ public enum Badge {
         this.maxBoundary = maxBoundary;
     }
 
-    public static Badge generate(int totalDiscountAmount) {
+    public static Badge from(int totalDiscountAmount) {
         return Arrays.stream(Badge.values())
                 .filter(badge -> totalDiscountAmount >= badge.getMinBoundary()
                         && (totalDiscountAmount < badge.getMaxBoundary()))

@@ -1,7 +1,7 @@
 package christmas.view;
 
 import christmas.constant.DiscountType;
-import christmas.constant.Badge;
+import christmas.domain.Badge;
 import christmas.constant.Message;
 import christmas.domain.Order;
 import java.util.Map;

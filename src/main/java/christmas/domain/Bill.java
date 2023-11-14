@@ -2,7 +2,6 @@ package christmas.domain;
 
 import christmas.constant.DiscountAmount;
 import christmas.constant.DiscountType;
-import christmas.constant.Badge;
 import java.util.Map;
 
 public class Bill {
@@ -37,7 +36,7 @@ public class Bill {
 
     public Badge getBadge() {
         int discountAmount = calculateDiscountAmount();
-        return Badge.generate(discountAmount);
+        return Badge.from(discountAmount);
     }
 
     public int getBeforeDiscountTotalOrderAmount() {
