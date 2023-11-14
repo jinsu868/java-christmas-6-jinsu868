@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.constant.DiscountAmount;
 import christmas.constant.DiscountType;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,8 @@ class DiscountManagerTest {
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
 
-        Assertions.assertThat(discountResults.get(DiscountType.SPECIAL)).isEqualTo(1000);
+        Assertions.assertThat(discountResults.get(DiscountType.SPECIAL))
+                .isEqualTo(DiscountAmount.SPECIAL.getAmount());
     }
 
     @ParameterizedTest
@@ -98,7 +100,8 @@ class DiscountManagerTest {
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
 
-        Assertions.assertThat(discountResults.get(DiscountType.WEEKDAY)).isEqualTo(2023 * 3);
+        Assertions.assertThat(discountResults.get(DiscountType.WEEKDAY))
+                .isEqualTo(DiscountAmount.WEEKDAY.getAmount() * 3);
     }
 
     @ParameterizedTest
@@ -128,7 +131,8 @@ class DiscountManagerTest {
         DiscountManager discountManager = new DiscountManager(order);
         Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
 
-        Assertions.assertThat(discountResults.get(DiscountType.WEEKEND)).isEqualTo(2023 * 3);
+        Assertions.assertThat(discountResults.get(DiscountType.WEEKEND))
+                .isEqualTo(DiscountAmount.WEEKEND.getAmount() * 3);
     }
 
     @ParameterizedTest
@@ -156,9 +160,8 @@ class DiscountManagerTest {
         orderMenus.add(orderMenu);
         Order order = new Order(visitDate, orderMenus);
         DiscountManager discountManager = new DiscountManager(order);
-        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
 
-        Assertions.assertThat(discountResults.get(DiscountType.GIVEAWAY)).isEqualTo(25000);
+        Assertions.assertThat(discountManager.judgeGiveaway()).isTrue();
     }
 
     @Test
@@ -170,11 +173,33 @@ class DiscountManagerTest {
         orderMenus.add(orderMenu);
         Order order = new Order(visitDate, orderMenus);
         DiscountManager discountManager = new DiscountManager(order);
-        Map<DiscountType, Integer> discountResults = discountManager.getDiscountResults();
 
-        boolean isGiveawayDiscount = discountResults.keySet().stream()
-                .anyMatch(discountType -> discountType.getType().equals(DiscountType.GIVEAWAY));
+        Assertions.assertThat(discountManager.judgeGiveaway()).isFalse();
+    }
 
-        Assertions.assertThat(isGiveawayDiscount).isFalse();
+    @ParameterizedTest
+    @CsvSource({"1,2023", "2,4046", "3,6069"})
+    void 할인_총액_로직_테스트(int number, int result) {
+        VisitDate visitDate = new VisitDate(29);
+        OrderMenu orderMenu = new OrderMenu("해산물파스타", number);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        Order order = new Order(visitDate, orderMenus);
+        DiscountManager discountManager = new DiscountManager(order);
+
+        Assertions.assertThat(discountManager.calculateDiscountAmount()).isEqualTo(result);
+    }
+
+    @Test
+    @DisplayName("할인 이후의 총액을 계산하는 로직을 테스트한다.")
+    void 할인_이후_총액_계산_로직_테스트() {
+        VisitDate visitDate = new VisitDate(29);
+        OrderMenu orderMenu = new OrderMenu("해산물파스타", 1);
+        List<OrderMenu> orderMenus = new ArrayList<>();
+        orderMenus.add(orderMenu);
+        Order order = new Order(visitDate, orderMenus);
+        DiscountManager discountManager = new DiscountManager(order);
+        Assertions.assertThat(discountManager.getAfterDiscountOrderAmount())
+                .isEqualTo(Menu.SEAFOOD_PASTA.getPrice() - DiscountAmount.WEEKEND.getAmount());
     }
 }
